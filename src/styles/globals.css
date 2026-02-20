@@ -100,11 +100,17 @@ button {
 
 .top-nav {
   min-height: 56px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
   padding-inline: 18px;
+}
+
+.top-nav-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .icon-btn,
@@ -133,7 +139,6 @@ button {
 }
 
 .brand {
-  justify-self: start;
   display: inline-flex;
   align-items: center;
   font-family: "Cormorant Garamond", serif;
@@ -151,6 +156,26 @@ button {
   display: inline-flex;
   gap: 10px;
   align-items: center;
+}
+
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  margin-left: 8px;
+}
+
+.desktop-nav a {
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 234, 0.72);
+  transition: color 140ms ease;
+}
+
+.desktop-nav a:hover {
+  color: var(--color-text);
 }
 
 .header-menu-wrap {
@@ -339,41 +364,32 @@ button {
   background: transparent;
 }
 
-.header-cats {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-  overflow-x: auto;
-  white-space: nowrap;
+.header-promo {
   min-height: 42px;
-  border-top: 1px solid rgba(197, 164, 90, 0.14);
-  border-bottom: 1px solid rgba(197, 164, 90, 0.14);
+  overflow: hidden;
+  border-top: 1px solid rgba(197, 164, 90, 0.1);
+  border-bottom: 1px solid rgba(197, 164, 90, 0.1);
+  background: rgba(7, 7, 7, 0.42);
+  display: flex;
+  align-items: center;
+}
+
+.header-promo-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  min-width: max-content;
+  gap: 22px;
   padding: 0 18px;
-  scrollbar-width: none;
+  animation: promo-slide 38s linear infinite alternate;
 }
 
-.header-cats::-webkit-scrollbar {
-  display: none;
-}
-
-.header-cat {
+.header-promo-track span {
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(246, 242, 234, 0.58);
-}
-
-.header-cat-active {
-  color: var(--color-text);
-}
-
-.header-dot {
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  margin-right: 8px;
-  background: var(--color-text);
+  color: rgba(246, 242, 234, 0.82);
 }
 
 .page-content {
@@ -771,6 +787,47 @@ button {
   color: var(--color-text-muted);
 }
 
+.contact-form {
+  width: min(100%, 420px);
+  display: grid;
+  gap: 8px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(197, 164, 90, 0.3);
+  background: rgba(9, 9, 9, 0.58);
+  color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  padding: 8px 10px;
+  outline: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: rgba(226, 201, 141, 0.9);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 94px;
+}
+
+.contact-form-submit {
+  width: fit-content;
+  margin-top: 2px;
+}
+
 .footer-accordion-copy {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -885,9 +942,24 @@ button {
   }
 }
 
+@keyframes promo-slide {
+  from {
+    transform: translateX(-10%);
+  }
+  to {
+    transform: translateX(10%);
+  }
+}
+
 @media (max-width: 360px) {
   .product-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-promo-track {
+    animation: none;
   }
 }
 
@@ -927,6 +999,16 @@ button {
     justify-content: center;
     gap: 10px;
     align-items: start;
+  }
+}
+
+@media (min-width: 980px) {
+  .header-menu-wrap {
+    display: none;
+  }
+
+  .desktop-nav {
+    display: inline-flex;
   }
 }
 

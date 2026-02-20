@@ -98,7 +98,7 @@ function Cart({
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 2px", fontFamily: "Inter, sans-serif", fontSize: "0.82rem" }, children: item.title }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { style: { margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.72rem", color: "var(--color-text-muted)" }, children: [
             item.variantTitle,
-            item.price ? ` - R${parseFloat(item.price).toLocaleString()}` : ""
+            item.price ? ` - R${parseFloat(item.price).toFixed(2)} per bottle` : ""
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "qty-btn", onClick: () => onDecrement(item.variantId), children: "-" }),
@@ -136,12 +136,18 @@ function Cart({
 const STORAGE_KEY = 'jnw-cart-v1';
 const MAX_ITEM_QTY = 24;
 const CART_SYNC_EVENT = 'jnw-cart-sync';
+const BOTTLE_PRICE_ZAR = 155;
 
 function parseCart(raw) {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((item) => ({
+      ...item,
+      price: BOTTLE_PRICE_ZAR.toFixed(2),
+      currencyCode: 'ZAR',
+    }));
   } catch {
     return [];
   }
@@ -197,8 +203,8 @@ function useCart() {
             qty: 1,
             title: product.title,
             variantTitle: variant.title,
-            price: variant.price?.amount ?? variant.priceV2?.amount,
-            currencyCode: variant.price?.currencyCode ?? variant.priceV2?.currencyCode ?? "ZAR",
+            price: BOTTLE_PRICE_ZAR.toFixed(2),
+            currencyCode: "ZAR",
           },
         ];
       }
@@ -338,10 +344,9 @@ function HeaderCartButton() {
 
 const MENU_LINKS = [
   { href: "/#collection", label: "Shop Wines" },
-  { href: "/#collection", label: "Best Sellers" },
-  { href: "/#about", label: "About" },
-  { href: "/#about", label: "Information" },
-  { href: "/#about", label: "Contact" }
+  { href: "/#information", label: "Information" },
+  { href: "/#about-jnw", label: "About" },
+  { href: "/#contact", label: "Contact" }
 ];
 const CATEGORY_LINKS = [
   { href: "/#collection", label: "Whites" },
@@ -416,45 +421,12 @@ function HeaderMenuButton() {
   ] });
 }
 
-const CATEGORY_ITEMS = [
-  { key: "best-sellers", label: "Best Sellers" },
-  { key: "whites", label: "Whites" },
-  { key: "reds", label: "Reds" },
-  { key: "rose", label: "Rose" },
-  { key: "sparkling", label: "Sparkling" }
-];
-function normalizeCategory(value) {
-  if (!value) return "best-sellers";
-  const normalized = String(value).toLowerCase();
-  return CATEGORY_ITEMS.some((item) => item.key === normalized) ? normalized : "best-sellers";
-}
+const PROMO_TEXT = "PREMIUM SOUTH AFRICAN WINES  •  R155.00 PER BOTTLE  •  SECURE CHECKOUT  •  SHOP THE JNW COLLECTION";
 function HeaderCategoryNav() {
-  const [activeCategory, setActiveCategory] = reactExports.useState("best-sellers");
-  reactExports.useEffect(() => {
-    function syncFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      setActiveCategory(normalizeCategory(params.get("category")));
-    }
-    syncFromUrl();
-    window.addEventListener("popstate", syncFromUrl);
-    return () => window.removeEventListener("popstate", syncFromUrl);
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "header-cats", "aria-label": "Shop categories", children: CATEGORY_ITEMS.map((item) => {
-    const isActive = activeCategory === item.key;
-    const href = item.key === "best-sellers" ? "/#collection" : `/?category=${encodeURIComponent(item.key)}#collection`;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "a",
-      {
-        className: isActive ? "header-cat header-cat-active" : "header-cat",
-        href,
-        children: [
-          isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "header-dot", "aria-hidden": "true" }),
-          item.label
-        ]
-      },
-      item.key
-    );
-  }) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "header-promo", "aria-label": "Promotions", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "header-promo-track", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: PROMO_TEXT }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: PROMO_TEXT })
+  ] }) });
 }
 
 var __freeze = Object.freeze;
@@ -469,7 +441,7 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
     title = "JNW",
     description = "JNW headless storefront powered by Shopify."
   } = Astro2.props;
-  return renderTemplate(_a || (_a = __template(['<html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description"', "><title>", '</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">', '</head> <body> <header class="site-header"> <div class="container header-shell"> <nav class="top-nav"> ', ' <a href="/" class="brand"> <span>JNW</span> </a> <div class="header-icons"> <a href="/#about" class="icon-link" aria-label="Notifications"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path> <path d="M10 19a2 2 0 0 0 4 0"></path> </svg> </a> <a href="/#collection" class="icon-link" aria-label="Search"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle> <path d="m20 20-3.5-3.5"></path> </svg> </a> ', " </div> </nav> ", ' </div> </header> <main class="page-content"> ', ' </main> <footer id="about" class="site-footer"> <div class="container footer-shell"> <section class="footer-accordions"> <details> <summary>Shop Wines</summary> <div class="footer-accordion-body"> <a href="/#collection">Best Sellers</a> <a href="/#collection">All Wines</a> </div> </details> <details> <summary>Information</summary> <div class="footer-accordion-body"> <p class="footer-accordion-copy">\nStandard online sale terms for JNW Wine SA:\n</p> <ul class="footer-accordion-copy-list"> <li>Legal Drinking Age: You must be 18 years or older to purchase alcohol.</li> <li>Delivery: Orders are processed after payment confirmation and shipped to valid delivery addresses.</li> <li>Returns: Unopened items may be eligible for return subject to condition and approval.</li> <li>Opened alcohol products are non-returnable unless faulty, damaged, or supplied in error.</li> <li>Damaged or incorrect items must be reported promptly after delivery with proof (photos/order number).</li> <li>Approved refunds are returned to the original payment method after inspection and processing.</li> <li>Pricing and stock are subject to availability and may change without notice.</li> <li>We may cancel or refuse orders where fraud, pricing errors, or compliance concerns are identified.</li> <li>Customer data is handled for order fulfilment, support, and legal compliance purposes.</li> </ul> <p class="footer-accordion-copy">\nFor policy questions, contact\n<a class="footer-inline-link" href="mailto:info@jnwinesa.com">info@jnwinesa.com</a>.\n</p> </div> </details> <details> <summary>Contact</summary> <div class="footer-accordion-body"> <a href="mailto:info@jnwinesa.com">info@jnwinesa.com</a> </div> </details> <details> <summary>About JNW Wine SA</summary> <div class="footer-accordion-body"> <p class="footer-accordion-copy">\nJay Nkosi is the Founder and Owner of JNW Wine SA, a proudly South African brand\n                established in 2021. Born and raised in KwaMashu, he entered the wine industry with\n                a bold vision: to bring premium wines from South Africa to local and global tables.\n</p> <p class="footer-accordion-copy">\nDriven by innovation, authenticity, and service excellence, Jay has built JNW Wine\n                SA into a growing household name with a dedicated team committed to quality in every\n                bottle.\n</p> <p class="footer-accordion-copy">Notable Achievements:</p> <ul class="footer-accordion-copy-list"> <li>Wine of the Year</li> <li>Best Customer Service Award</li> <li>Manufacturer of the Year 2024/2025</li> </ul> </div> </details> </section> <p class="footer-brandmark">JNW</p> <div class="footer-social"> <a href="/#about" aria-label="Facebook"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v5h3v-5h2.2l.8-3H13V9c0-.6.4-1 1-1Z"></path> </svg> </a> <a href="/#about" aria-label="Instagram"> <svg viewBox="0 0 24 24" aria-hidden="true"> <rect x="4" y="4" width="16" height="16" rx="4"></rect> <circle cx="12" cy="12" r="3.6"></circle> <circle cx="17" cy="7" r="1"></circle> </svg> </a> <a href="/#about" aria-label="YouTube"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.2 8.2a2.4 2.4 0 0 0-1.7-1.7C16.9 6 12 6 12 6s-4.9 0-6.5.5a2.4 2.4 0 0 0-1.7 1.7C3.3 9.8 3.3 12 3.3 12s0 2.2.5 3.8a2.4 2.4 0 0 0 1.7 1.7C7.1 18 12 18 12 18s4.9 0 6.5-.5a2.4 2.4 0 0 0 1.7-1.7c.5-1.6.5-3.8.5-3.8s0-2.2-.5-3.8Z"></path> <path d="m10 14.8 4.2-2.8L10 9.2Z"></path> </svg> </a> <a href="/#about" aria-label="LinkedIn"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M7.2 9.1H4.3V19h2.9V9.1Zm.2-3.1a1.7 1.7 0 1 0-3.4 0 1.7 1.7 0 0 0 3.4 0ZM19.8 13.3c0-3-1.6-4.4-3.8-4.4-1.8 0-2.5 1-2.9 1.6V9.1h-2.9V19h2.9v-5.5c0-1.5.5-2.9 2.3-2.9s1.9 1.7 1.9 3V19h2.9v-5.7Z"></path> </svg> </a> </div> <div class="footer-legal"> <p>Drink Responsibly</p> <p>Copyright 2026 JNW Wine SA</p> </div> </div> </footer> <script>\n      (() => {\n        const header = document.querySelector(".site-header");\n        if (!header) return;\n\n        const onScroll = () => {\n          header.classList.toggle("site-header-scrolled", window.scrollY > 8);\n        };\n\n        onScroll();\n        window.addEventListener("scroll", onScroll, { passive: true });\n      })();\n    <\/script> </body> </html>'])), addAttribute(description, "content"), title, renderHead(), renderComponent($$result, "HeaderMenuButton", HeaderMenuButton, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderMenuButton.jsx", "client:component-export": "default" }), renderComponent($$result, "HeaderCartButton", HeaderCartButton, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderCartButton.jsx", "client:component-export": "default" }), renderComponent($$result, "HeaderCategoryNav", HeaderCategoryNav, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderCategoryNav.jsx", "client:component-export": "default" }), renderSlot($$result, $$slots["default"]));
+  return renderTemplate(_a || (_a = __template(['<html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description"', "><title>", '</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">', '</head> <body> <header class="site-header"> <div class="container header-shell"> <nav class="top-nav"> <div class="top-nav-left"> ', ' <a href="/" class="brand"> <span>JNW</span> </a> <nav class="desktop-nav" aria-label="Primary navigation"> <a href="/#collection">Shop Wines</a> <a href="/#information">Information</a> <a href="/#about-jnw">About</a> <a href="/#contact">Contact</a> </nav> </div> <div class="header-icons"> <a href="/#about" class="icon-link" aria-label="Notifications"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path> <path d="M10 19a2 2 0 0 0 4 0"></path> </svg> </a> <a href="/#collection" class="icon-link" aria-label="Search"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle> <path d="m20 20-3.5-3.5"></path> </svg> </a> ', " </div> </nav> ", ' </div> </header> <main class="page-content"> ', ' </main> <footer id="about" class="site-footer"> <div class="container footer-shell"> <section class="footer-accordions"> <details id="shop-wines"> <summary>Shop Wines</summary> <div class="footer-accordion-body"> <a href="/#collection">Best Sellers</a> <a href="/#collection">All Wines</a> </div> </details> <details id="information"> <summary>Information</summary> <div class="footer-accordion-body"> <p class="footer-accordion-copy">\nStandard online sale terms for JNW Wine SA:\n</p> <ul class="footer-accordion-copy-list"> <li>Legal Drinking Age: You must be 18 years or older to purchase alcohol.</li> <li>Delivery: Orders are processed after payment confirmation and shipped to valid delivery addresses.</li> <li>Returns: Unopened items may be eligible for return subject to condition and approval.</li> <li>Opened alcohol products are non-returnable unless faulty, damaged, or supplied in error.</li> <li>Damaged or incorrect items must be reported promptly after delivery with proof (photos/order number).</li> <li>Approved refunds are returned to the original payment method after inspection and processing.</li> <li>Pricing and stock are subject to availability and may change without notice.</li> <li>We may cancel or refuse orders where fraud, pricing errors, or compliance concerns are identified.</li> <li>Customer data is handled for order fulfilment, support, and legal compliance purposes.</li> </ul> <p class="footer-accordion-copy">\nFor policy questions, contact\n<a class="footer-inline-link" href="mailto:info@jnwinesa.com">info@jnwinesa.com</a>.\n</p> </div> </details> <details id="contact"> <summary>Contact</summary> <div class="footer-accordion-body"> <form class="contact-form" action="mailto:info@jnwinesa.com" method="post" enctype="text/plain"> <label>\nName\n<input type="text" name="name" autocomplete="name" required> </label> <label>\nEmail\n<input type="email" name="email" autocomplete="email" required> </label> <label>\nMessage\n<textarea name="message" rows="4" required></textarea> </label> <button type="submit" class="btn-gold contact-form-submit">Send Message</button> </form> </div> </details> <details id="about-jnw"> <summary>About JNW Wine SA</summary> <div class="footer-accordion-body"> <p class="footer-accordion-copy">\nJay Nkosi is the Founder and Owner of JNW Wine SA, a proudly South African brand\n                established in 2021. Born and raised in KwaMashu, he entered the wine industry with\n                a bold vision: to bring premium wines from South Africa to local and global tables.\n</p> <p class="footer-accordion-copy">\nDriven by innovation, authenticity, and service excellence, Jay has built JNW Wine\n                SA into a growing household name with a dedicated team committed to quality in every\n                bottle.\n</p> <p class="footer-accordion-copy">Notable Achievements:</p> <ul class="footer-accordion-copy-list"> <li>Wine of the Year</li> <li>Best Customer Service Award</li> <li>Manufacturer of the Year 2024/2025</li> </ul> </div> </details> </section> <div class="footer-social"> <a href="/#about" aria-label="Facebook"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v5h3v-5h2.2l.8-3H13V9c0-.6.4-1 1-1Z"></path> </svg> </a> <a href="/#about" aria-label="Instagram"> <svg viewBox="0 0 24 24" aria-hidden="true"> <rect x="4" y="4" width="16" height="16" rx="4"></rect> <circle cx="12" cy="12" r="3.6"></circle> <circle cx="17" cy="7" r="1"></circle> </svg> </a> <a href="/#about" aria-label="YouTube"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.2 8.2a2.4 2.4 0 0 0-1.7-1.7C16.9 6 12 6 12 6s-4.9 0-6.5.5a2.4 2.4 0 0 0-1.7 1.7C3.3 9.8 3.3 12 3.3 12s0 2.2.5 3.8a2.4 2.4 0 0 0 1.7 1.7C7.1 18 12 18 12 18s4.9 0 6.5-.5a2.4 2.4 0 0 0 1.7-1.7c.5-1.6.5-3.8.5-3.8s0-2.2-.5-3.8Z"></path> <path d="m10 14.8 4.2-2.8L10 9.2Z"></path> </svg> </a> <a href="/#about" aria-label="LinkedIn"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="M7.2 9.1H4.3V19h2.9V9.1Zm.2-3.1a1.7 1.7 0 1 0-3.4 0 1.7 1.7 0 0 0 3.4 0ZM19.8 13.3c0-3-1.6-4.4-3.8-4.4-1.8 0-2.5 1-2.9 1.6V9.1h-2.9V19h2.9v-5.5c0-1.5.5-2.9 2.3-2.9s1.9 1.7 1.9 3V19h2.9v-5.7Z"></path> </svg> </a> </div> <div class="footer-legal"> <p>Drink Responsibly</p> <p>Copyright 2026 JNW Wine SA</p> </div> </div> </footer> <script>\n      (() => {\n        const header = document.querySelector(".site-header");\n        if (!header) return;\n\n        const onScroll = () => {\n          header.classList.toggle("site-header-scrolled", window.scrollY > 8);\n        };\n\n        onScroll();\n        window.addEventListener("scroll", onScroll, { passive: true });\n      })();\n\n      (() => {\n        const footerAccordions = new Set(["shop-wines", "information", "contact", "about-jnw"]);\n        const detailsList = Array.from(\n          document.querySelectorAll(".footer-accordions details"),\n        );\n\n        const closeOthers = (activeDetails) => {\n          detailsList.forEach((item) => {\n            if (item !== activeDetails) item.open = false;\n          });\n        };\n\n        detailsList.forEach((item) => {\n          item.addEventListener("toggle", () => {\n            if (item.open) closeOthers(item);\n          });\n        });\n\n        const openFromHash = () => {\n          const hash = window.location.hash.replace("#", "");\n          if (!footerAccordions.has(hash)) return;\n\n          const details = document.getElementById(hash);\n          if (!(details instanceof HTMLDetailsElement)) return;\n          closeOthers(details);\n          details.open = true;\n          details.scrollIntoView({ behavior: "smooth", block: "start" });\n        };\n\n        openFromHash();\n        window.addEventListener("hashchange", openFromHash);\n      })();\n    <\/script> </body> </html>'])), addAttribute(description, "content"), title, renderHead(), renderComponent($$result, "HeaderMenuButton", HeaderMenuButton, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderMenuButton.jsx", "client:component-export": "default" }), renderComponent($$result, "HeaderCartButton", HeaderCartButton, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderCartButton.jsx", "client:component-export": "default" }), renderComponent($$result, "HeaderCategoryNav", HeaderCategoryNav, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/components/HeaderCategoryNav.jsx", "client:component-export": "default" }), renderSlot($$result, $$slots["default"]));
 }, "C:/Users/Wonga/Desktop/JNW Wine SA FInal/src/layouts/MainLayout.astro", void 0);
 
 export { $$MainLayout as $, jsxRuntimeExports as j, useCart as u };

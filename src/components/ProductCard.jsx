@@ -2,15 +2,13 @@ import React, { useState } from "react";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
+const BOTTLE_PRICE_ZAR = 155;
 
 export default function ProductCard({ product, onAddToCart, index = 0 }) {
   const [added, setAdded] = useState(false);
   const firstImage = product.images?.edges?.[0]?.node?.url;
   const firstVariant = product.variants?.edges?.[0]?.node;
-  const price = firstVariant?.price?.amount ?? firstVariant?.priceV2?.amount;
-  const parsedPrice = price ? parseFloat(price) : 0;
-  const memberPrice = parsedPrice ? `R${parsedPrice.toFixed(2)}` : "";
-  const retailPrice = parsedPrice ? `R${(parsedPrice * 1.22).toFixed(2)}` : "";
+  const bottlePrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
 
   function handleAdd() {
     if (!firstVariant?.availableForSale) return;
@@ -39,9 +37,7 @@ export default function ProductCard({ product, onAddToCart, index = 0 }) {
             {product.title}
           </h3>
         </a>
-        <p className="product-meta-price">
-          {memberPrice ? `Members: ${memberPrice}${retailPrice ? ` | ${retailPrice}` : ""}` : "-"}
-        </p>
+        <p className="product-meta-price">{bottlePrice}</p>
 
         {firstVariant?.availableForSale ? (
           <button

@@ -33,10 +33,18 @@ const {
     <header class="site-header">
       <div class="container header-shell">
         <nav class="top-nav">
-          <HeaderMenuButton client:load />
-          <a href="/" class="brand">
-            <span>JNW</span>
-          </a>
+          <div class="top-nav-left">
+            <HeaderMenuButton client:load />
+            <a href="/" class="brand">
+              <span>JNW</span>
+            </a>
+            <nav class="desktop-nav" aria-label="Primary navigation">
+              <a href="/#collection">Shop Wines</a>
+              <a href="/#information">Information</a>
+              <a href="/#about-jnw">About</a>
+              <a href="/#contact">Contact</a>
+            </nav>
+          </div>
           <div class="header-icons">
             <a href="/#about" class="icon-link" aria-label="Notifications">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -64,14 +72,14 @@ const {
     <footer id="about" class="site-footer">
       <div class="container footer-shell">
         <section class="footer-accordions">
-          <details>
+          <details id="shop-wines">
             <summary>Shop Wines</summary>
             <div class="footer-accordion-body">
               <a href="/#collection">Best Sellers</a>
               <a href="/#collection">All Wines</a>
             </div>
           </details>
-          <details>
+          <details id="information">
             <summary>Information</summary>
             <div class="footer-accordion-body">
               <p class="footer-accordion-copy">
@@ -94,13 +102,32 @@ const {
               </p>
             </div>
           </details>
-          <details>
+          <details id="contact">
             <summary>Contact</summary>
             <div class="footer-accordion-body">
-              <a href="mailto:info@jnwinesa.com">info@jnwinesa.com</a>
+              <form
+                class="contact-form"
+                action="mailto:info@jnwinesa.com"
+                method="post"
+                enctype="text/plain"
+              >
+                <label>
+                  Name
+                  <input type="text" name="name" autocomplete="name" required />
+                </label>
+                <label>
+                  Email
+                  <input type="email" name="email" autocomplete="email" required />
+                </label>
+                <label>
+                  Message
+                  <textarea name="message" rows="4" required></textarea>
+                </label>
+                <button type="submit" class="btn-gold contact-form-submit">Send Message</button>
+              </form>
             </div>
           </details>
-          <details>
+          <details id="about-jnw">
             <summary>About JNW Wine SA</summary>
             <div class="footer-accordion-body">
               <p class="footer-accordion-copy">
@@ -122,8 +149,6 @@ const {
             </div>
           </details>
         </section>
-
-        <p class="footer-brandmark">JNW</p>
 
         <div class="footer-social">
           <a href="/#about" aria-label="Facebook">
@@ -169,6 +194,39 @@ const {
 
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
+      })();
+
+      (() => {
+        const footerAccordions = new Set(["shop-wines", "information", "contact", "about-jnw"]);
+        const detailsList = Array.from(
+          document.querySelectorAll(".footer-accordions details"),
+        );
+
+        const closeOthers = (activeDetails) => {
+          detailsList.forEach((item) => {
+            if (item !== activeDetails) item.open = false;
+          });
+        };
+
+        detailsList.forEach((item) => {
+          item.addEventListener("toggle", () => {
+            if (item.open) closeOthers(item);
+          });
+        });
+
+        const openFromHash = () => {
+          const hash = window.location.hash.replace("#", "");
+          if (!footerAccordions.has(hash)) return;
+
+          const details = document.getElementById(hash);
+          if (!(details instanceof HTMLDetailsElement)) return;
+          closeOthers(details);
+          details.open = true;
+          details.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+
+        openFromHash();
+        window.addEventListener("hashchange", openFromHash);
       })();
     </script>
   </body>

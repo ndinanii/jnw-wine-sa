@@ -1,19 +1,17 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_DIV_hU0m.mjs';
-import { j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_DQx0Ql3P.mjs';
+import { j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_DYPWInhf.mjs';
 import { a as reactExports } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
 import { a as getProducts, s as shopifyIsConfigured } from '../chunks/shopify_CZJlNPZv.mjs';
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
+const BOTTLE_PRICE_ZAR = 155;
 function ProductCard({ product, onAddToCart, index = 0 }) {
   const [added, setAdded] = reactExports.useState(false);
   const firstImage = product.images?.edges?.[0]?.node?.url;
   const firstVariant = product.variants?.edges?.[0]?.node;
-  const price = firstVariant?.price?.amount ?? firstVariant?.priceV2?.amount;
-  const parsedPrice = price ? parseFloat(price) : 0;
-  const memberPrice = parsedPrice ? `R${parsedPrice.toFixed(2)}` : "";
-  const retailPrice = parsedPrice ? `R${(parsedPrice * 1.22).toFixed(2)}` : "";
+  const bottlePrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
   function handleAdd() {
     if (!firstVariant?.availableForSale) return;
     onAddToCart(firstVariant, product);
@@ -33,7 +31,7 @@ function ProductCard({ product, onAddToCart, index = 0 }) {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "product-card-body", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-label", children: "Estate Label" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `/product/${product.handle}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "product-meta-title", children: product.title }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-price", children: memberPrice ? `Members: ${memberPrice}${retailPrice ? ` | ${retailPrice}` : ""}` : "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-price", children: bottlePrice }),
       firstVariant?.availableForSale ? /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {

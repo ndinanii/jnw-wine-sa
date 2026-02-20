@@ -1,11 +1,12 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead } from '../../chunks/astro/server_DIV_hU0m.mjs';
-import { u as useCart, j as jsxRuntimeExports, $ as $$MainLayout } from '../../chunks/MainLayout_DQx0Ql3P.mjs';
+import { u as useCart, j as jsxRuntimeExports, $ as $$MainLayout } from '../../chunks/MainLayout_DYPWInhf.mjs';
 import { a as reactExports } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
 import { g as getProductByHandle, s as shopifyIsConfigured } from '../../chunks/shopify_CZJlNPZv.mjs';
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
+const BOTTLE_PRICE_ZAR = 155;
 function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
   const [selectedVariantIdx, setSelectedVariantIdx] = reactExports.useState(0);
@@ -14,10 +15,7 @@ function ProductDetailClient({ product }) {
   const variants = product.variants?.edges?.map((edge) => edge.node) ?? [];
   const selectedVariant = variants[selectedVariantIdx];
   const selectedImage = images[selectedImageIdx]?.url || FALLBACK_IMAGE;
-  const selectedPrice = reactExports.useMemo(() => {
-    const amount = selectedVariant?.price?.amount ?? selectedVariant?.priceV2?.amount;
-    return amount ? `R${parseFloat(amount).toLocaleString()}` : "";
-  }, [selectedVariant]);
+  const selectedPrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
   function handleAddToCart() {
     if (!selectedVariant?.availableForSale) return;
     addToCart(selectedVariant, product);
@@ -53,7 +51,7 @@ function ProductDetailClient({ product }) {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pdp-info", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", style: { margin: "0 0 4px" }, children: "JNW Collection" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { style: { margin: "0 0 6px", fontSize: "clamp(1.2rem, 2.8vw, 1.7rem)", lineHeight: 1.1 }, children: product.title }),
-      selectedPrice && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }, children: selectedPrice }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }, children: selectedPrice }),
       product.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.76rem", lineHeight: 1.45, color: "var(--color-text-muted)" }, children: product.description }),
       variants.length > 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: "8px" }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.62rem", color: "var(--color-text-muted)" }, children: "Choose variant" }),

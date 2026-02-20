@@ -45,7 +45,7 @@ export default function Cart({
               <p style={{ margin: "0 0 2px", fontFamily: "Inter, sans-serif", fontSize: "0.82rem" }}>{item.title}</p>
               <p style={{ margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.72rem", color: "var(--color-text-muted)" }}>
                 {item.variantTitle}
-                {item.price ? ` - R${parseFloat(item.price).toLocaleString()}` : ""}
+                {item.price ? ` - R${parseFloat(item.price).toFixed(2)} per bottle` : ""}
               </p>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <button type="button" className="qty-btn" onClick={() => onDecrement(item.variantId)}>

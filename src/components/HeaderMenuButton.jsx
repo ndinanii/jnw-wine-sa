@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 
 const MENU_LINKS = [
   { href: "/#collection", label: "Shop Wines" },
-  { href: "/#collection", label: "Best Sellers" },
-  { href: "/#about", label: "About" },
-  { href: "/#about", label: "Information" },
-  { href: "/#about", label: "Contact" },
+  { href: "/#information", label: "Information" },
+  { href: "/#about-jnw", label: "About" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 const CATEGORY_LINKS = [

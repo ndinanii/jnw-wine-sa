@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import useCart from "../hooks/useCart";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
+const BOTTLE_PRICE_ZAR = 155;
 
 export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
@@ -13,11 +14,7 @@ export default function ProductDetailClient({ product }) {
   const variants = product.variants?.edges?.map((edge) => edge.node) ?? [];
   const selectedVariant = variants[selectedVariantIdx];
   const selectedImage = images[selectedImageIdx]?.url || FALLBACK_IMAGE;
-
-  const selectedPrice = useMemo(() => {
-    const amount = selectedVariant?.price?.amount ?? selectedVariant?.priceV2?.amount;
-    return amount ? `R${parseFloat(amount).toLocaleString()}` : "";
-  }, [selectedVariant]);
+  const selectedPrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
 
   function handleAddToCart() {
     if (!selectedVariant?.availableForSale) return;
@@ -63,7 +60,7 @@ export default function ProductDetailClient({ product }) {
           JNW Collection
         </p>
         <h1 style={{ margin: "0 0 6px", fontSize: "clamp(1.2rem, 2.8vw, 1.7rem)", lineHeight: 1.1 }}>{product.title}</h1>
-        {selectedPrice && <p style={{ margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }}>{selectedPrice}</p>}
+        <p style={{ margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }}>{selectedPrice}</p>
         {product.description && (
           <p style={{ margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.76rem", lineHeight: 1.45, color: "var(--color-text-muted)" }}>
             {product.description}

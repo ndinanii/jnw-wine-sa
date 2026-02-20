@@ -3,12 +3,18 @@ import { useEffect, useState, useCallback } from 'react';
 const STORAGE_KEY = 'jnw-cart-v1';
 const MAX_ITEM_QTY = 24;
 const CART_SYNC_EVENT = 'jnw-cart-sync';
+const BOTTLE_PRICE_ZAR = 155;
 
 function parseCart(raw) {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((item) => ({
+      ...item,
+      price: BOTTLE_PRICE_ZAR.toFixed(2),
+      currencyCode: 'ZAR',
+    }));
   } catch {
     return [];
   }
@@ -64,8 +70,8 @@ export default function useCart() {
             qty: 1,
             title: product.title,
             variantTitle: variant.title,
-            price: variant.price?.amount ?? variant.priceV2?.amount,
-            currencyCode: variant.price?.currencyCode ?? variant.priceV2?.currencyCode ?? "ZAR",
+            price: BOTTLE_PRICE_ZAR.toFixed(2),
+            currencyCode: "ZAR",
           },
         ];
       }
