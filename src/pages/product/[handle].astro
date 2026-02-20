@@ -1,0 +1,43 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import ProductDetailClient from "../../components/ProductDetailClient.jsx";
+import { getProductByHandle, shopifyIsConfigured } from "../../lib/shopify";
+
+const { handle } = Astro.params;
+const configured = shopifyIsConfigured();
+const product = configured && handle ? await getProductByHandle(handle) : null;
+
+if (configured && handle && !product) {
+  Astro.response.status = 404;
+}
+---
+
+<MainLayout
+  title={product ? `${product.title} | JNW Wine SA` : "Product | JNW Wine SA"}
+  description={product?.description || "JNW Wine SA product page"}
+>
+  <section class="section section-tight">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <a href="/">Collection</a>
+        <span>/</span>
+        <span>{product?.title || "Product"}</span>
+      </nav>
+
+      {
+        product ? (
+          <ProductDetailClient client:load product={product} />
+        ) : (
+          <div class="status-card">
+            <p>
+              {configured
+                ? "Product not found."
+                : "Storefront is not configured. Add Shopify env vars."}
+            </p>
+            <a class="btn-outline" href="/">Back to collection</a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</MainLayout>

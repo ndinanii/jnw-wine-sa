@@ -1,0 +1,175 @@
+---
+import "../styles/globals.css";
+import HeaderCartButton from "../components/HeaderCartButton.jsx";
+import HeaderMenuButton from "../components/HeaderMenuButton.jsx";
+import HeaderCategoryNav from "../components/HeaderCategoryNav.jsx";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "JNW",
+  description = "JNW headless storefront powered by Shopify.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-shell">
+        <nav class="top-nav">
+          <HeaderMenuButton client:load />
+          <a href="/" class="brand">
+            <span>JNW</span>
+          </a>
+          <div class="header-icons">
+            <a href="/#about" class="icon-link" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path>
+                <path d="M10 19a2 2 0 0 0 4 0"></path>
+              </svg>
+            </a>
+            <a href="/#collection" class="icon-link" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+            </a>
+            <HeaderCartButton client:load />
+          </div>
+        </nav>
+        <HeaderCategoryNav client:load />
+      </div>
+    </header>
+
+    <main class="page-content">
+      <slot />
+    </main>
+
+    <footer id="about" class="site-footer">
+      <div class="container footer-shell">
+        <section class="footer-accordions">
+          <details>
+            <summary>Shop Wines</summary>
+            <div class="footer-accordion-body">
+              <a href="/#collection">Best Sellers</a>
+              <a href="/#collection">All Wines</a>
+            </div>
+          </details>
+          <details>
+            <summary>Information</summary>
+            <div class="footer-accordion-body">
+              <p class="footer-accordion-copy">
+                Standard online sale terms for JNW Wine SA:
+              </p>
+              <ul class="footer-accordion-copy-list">
+                <li>Legal Drinking Age: You must be 18 years or older to purchase alcohol.</li>
+                <li>Delivery: Orders are processed after payment confirmation and shipped to valid delivery addresses.</li>
+                <li>Returns: Unopened items may be eligible for return subject to condition and approval.</li>
+                <li>Opened alcohol products are non-returnable unless faulty, damaged, or supplied in error.</li>
+                <li>Damaged or incorrect items must be reported promptly after delivery with proof (photos/order number).</li>
+                <li>Approved refunds are returned to the original payment method after inspection and processing.</li>
+                <li>Pricing and stock are subject to availability and may change without notice.</li>
+                <li>We may cancel or refuse orders where fraud, pricing errors, or compliance concerns are identified.</li>
+                <li>Customer data is handled for order fulfilment, support, and legal compliance purposes.</li>
+              </ul>
+              <p class="footer-accordion-copy">
+                For policy questions, contact
+                <a class="footer-inline-link" href="mailto:info@jnwinesa.com">info@jnwinesa.com</a>.
+              </p>
+            </div>
+          </details>
+          <details>
+            <summary>Contact</summary>
+            <div class="footer-accordion-body">
+              <a href="mailto:info@jnwinesa.com">info@jnwinesa.com</a>
+            </div>
+          </details>
+          <details>
+            <summary>About JNW Wine SA</summary>
+            <div class="footer-accordion-body">
+              <p class="footer-accordion-copy">
+                Jay Nkosi is the Founder and Owner of JNW Wine SA, a proudly South African brand
+                established in 2021. Born and raised in KwaMashu, he entered the wine industry with
+                a bold vision: to bring premium wines from South Africa to local and global tables.
+              </p>
+              <p class="footer-accordion-copy">
+                Driven by innovation, authenticity, and service excellence, Jay has built JNW Wine
+                SA into a growing household name with a dedicated team committed to quality in every
+                bottle.
+              </p>
+              <p class="footer-accordion-copy">Notable Achievements:</p>
+              <ul class="footer-accordion-copy-list">
+                <li>Wine of the Year</li>
+                <li>Best Customer Service Award</li>
+                <li>Manufacturer of the Year 2024/2025</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <p class="footer-brandmark">JNW</p>
+
+        <div class="footer-social">
+          <a href="/#about" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v5h3v-5h2.2l.8-3H13V9c0-.6.4-1 1-1Z"></path>
+            </svg>
+          </a>
+          <a href="/#about" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.6"></circle>
+              <circle cx="17" cy="7" r="1"></circle>
+            </svg>
+          </a>
+          <a href="/#about" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.2 8.2a2.4 2.4 0 0 0-1.7-1.7C16.9 6 12 6 12 6s-4.9 0-6.5.5a2.4 2.4 0 0 0-1.7 1.7C3.3 9.8 3.3 12 3.3 12s0 2.2.5 3.8a2.4 2.4 0 0 0 1.7 1.7C7.1 18 12 18 12 18s4.9 0 6.5-.5a2.4 2.4 0 0 0 1.7-1.7c.5-1.6.5-3.8.5-3.8s0-2.2-.5-3.8Z"></path>
+              <path d="m10 14.8 4.2-2.8L10 9.2Z"></path>
+            </svg>
+          </a>
+          <a href="/#about" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.2 9.1H4.3V19h2.9V9.1Zm.2-3.1a1.7 1.7 0 1 0-3.4 0 1.7 1.7 0 0 0 3.4 0ZM19.8 13.3c0-3-1.6-4.4-3.8-4.4-1.8 0-2.5 1-2.9 1.6V9.1h-2.9V19h2.9v-5.5c0-1.5.5-2.9 2.3-2.9s1.9 1.7 1.9 3V19h2.9v-5.7Z"></path>
+            </svg>
+          </a>
+        </div>
+
+        <div class="footer-legal">
+          <p>Drink Responsibly</p>
+          <p>Copyright 2026 JNW Wine SA</p>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const header = document.querySelector(".site-header");
+        if (!header) return;
+
+        const onScroll = () => {
+          header.classList.toggle("site-header-scrolled", window.scrollY > 8);
+        };
+
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      })();
+    </script>
+  </body>
+</html>

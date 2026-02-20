@@ -1,0 +1,70 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ProductList from "../components/ProductList.astro";
+import { getProducts, shopifyIsConfigured } from "../lib/shopify";
+
+const configured = shopifyIsConfigured();
+const products = configured ? await getProducts(24) : [];
+const heroProducts = products.slice(0, 5);
+const fallbackImage =
+  "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
+---
+
+<MainLayout title="JNW Storefront">
+  <section class="promo-hero">
+    <div class="container promo-inner">
+      <p class="section-label">Limited Release</p>
+      <h1>Free Shipping On Curated 6-Packs</h1>
+      <p class="hero-copy">
+        Celebrate with premium wines selected for sharing, delivered fast, with secure checkout.
+      </p>
+      <a href="#collection" class="btn-gold">Shop The Collection</a>
+
+      {
+        heroProducts.length > 0 && (
+          <div class="hero-bottle-row" aria-label="Featured products">
+            {heroProducts.map((product) => (
+              <a
+                key={product.id}
+                class="hero-bottle"
+                href={`/product/${product.handle}`}
+              >
+                <img
+                  src={product.images?.edges?.[0]?.node?.url || fallbackImage}
+                  alt={product.title}
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section id="collection" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Collection</p>
+        </div>
+      </div>
+
+      {
+        configured ? (
+          products.length ? (
+            <ProductList products={products} />
+          ) : (
+            <div class="status-card">
+              <p>No products found in Shopify.</p>
+            </div>
+          )
+        ) : (
+          <div class="status-card">
+            <p>Storefront is not configured. Add Shopify env vars to run this store.</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</MainLayout>
