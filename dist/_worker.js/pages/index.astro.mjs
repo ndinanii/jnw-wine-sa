@@ -1,6 +1,6 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_DIV_hU0m.mjs';
-import { j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_DYPWInhf.mjs';
+import { j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_BmzsD3Yj.mjs';
 import { a as reactExports } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
 import { a as getProducts, s as shopifyIsConfigured } from '../chunks/shopify_CZJlNPZv.mjs';
@@ -36,17 +36,16 @@ function ProductCard({ product, onAddToCart, index = 0 }) {
         "button",
         {
           type: "button",
-          className: "btn-gold",
+          className: "btn-gold product-card-cta",
           onClick: handleAdd,
-          style: { width: "100%", padding: "8px 12px", fontSize: "0.58rem" },
+          style: { padding: "8px 12px", fontSize: "0.58rem" },
           children: added ? "Added" : "Add to cart"
         }
       ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
         "span",
         {
-          className: "btn-outline",
+          className: "btn-outline product-card-cta",
           style: {
-            width: "100%",
             justifyContent: "center",
             padding: "8px 12px",
             fontSize: "0.58rem",

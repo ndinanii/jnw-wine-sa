@@ -42,17 +42,16 @@ export default function ProductCard({ product, onAddToCart, index = 0 }) {
         {firstVariant?.availableForSale ? (
           <button
             type="button"
-            className="btn-gold"
+            className="btn-gold product-card-cta"
             onClick={handleAdd}
-            style={{ width: "100%", padding: "8px 12px", fontSize: "0.58rem" }}
+            style={{ padding: "8px 12px", fontSize: "0.58rem" }}
           >
             {added ? "Added" : "Add to cart"}
           </button>
         ) : (
           <span
-            className="btn-outline"
+            className="btn-outline product-card-cta"
             style={{
-              width: "100%",
               justifyContent: "center",
               padding: "8px 12px",
               fontSize: "0.58rem",

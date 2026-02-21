@@ -1,6 +1,6 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead } from '../../chunks/astro/server_DIV_hU0m.mjs';
-import { u as useCart, j as jsxRuntimeExports, $ as $$MainLayout } from '../../chunks/MainLayout_DYPWInhf.mjs';
+import { u as useCart, j as jsxRuntimeExports, $ as $$MainLayout } from '../../chunks/MainLayout_BmzsD3Yj.mjs';
 import { a as reactExports } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
 import { g as getProductByHandle, s as shopifyIsConfigured } from '../../chunks/shopify_CZJlNPZv.mjs';
