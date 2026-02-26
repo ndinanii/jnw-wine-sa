@@ -3640,4 +3640,4 @@ function defineMiddleware(fn) {
   return fn;
 }
 
-export { PERSIST_SYMBOL as P, RouteCache as R, SERVER_ISLAND_COMPONENT as S, normalizeTheLocale as a, redirectToFallback as b, redirectToDefaultLocale as c, requestHasLocale as d, defineMiddleware as e, SERVER_ISLAND_ROUTE as f, createEndpoint as g, findRouteToRewrite as h, isRequestServerIsland as i, RenderContext as j, getSetCookiesFromResponse as k, matchRoute as m, notFound as n, requestIs404Or500 as r, sequence as s, validateAndDecodePathname as v };
+export { PERSIST_SYMBOL as P, RouteCache as R, SERVER_ISLAND_COMPONENT as S, normalizeTheLocale as a, redirectToFallback as b, redirectToDefaultLocale as c, defineMiddleware as d, requestHasLocale as e, SERVER_ISLAND_ROUTE as f, createEndpoint as g, findRouteToRewrite as h, isRequestServerIsland as i, RenderContext as j, getSetCookiesFromResponse as k, matchRoute as m, notFound as n, requestIs404Or500 as r, sequence as s, validateAndDecodePathname as v };

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { formatVariantLabel, getVariantVintage } from '../lib/productVariants';
 
 const STORAGE_KEY = 'jnw-cart-v1';
 const MAX_ITEM_QTY = 24;
@@ -12,6 +13,14 @@ function parseCart(raw) {
     if (!Array.isArray(parsed)) return [];
     return parsed.map((item) => ({
       ...item,
+      variantTitle:
+        typeof item?.variantTitle === 'string' && item.variantTitle.trim()
+          ? item.variantTitle.trim()
+          : '',
+      vintage:
+        typeof item?.vintage === 'string' && item.vintage.trim()
+          ? item.vintage.trim()
+          : '',
       price: BOTTLE_PRICE_ZAR.toFixed(2),
       currencyCode: 'ZAR',
     }));
@@ -60,6 +69,9 @@ export default function useCart() {
 
   const addToCart = useCallback((variant, product) => {
     if (!variant?.id) return;
+    const variantTitle = formatVariantLabel(variant);
+    const vintage = getVariantVintage(variant);
+
     setCart((current) => {
       const index = current.findIndex((item) => item.variantId === variant.id);
       if (index === -1) {
@@ -69,14 +81,22 @@ export default function useCart() {
             variantId: variant.id,
             qty: 1,
             title: product.title,
-            variantTitle: variant.title,
+            variantTitle,
+            vintage,
             price: BOTTLE_PRICE_ZAR.toFixed(2),
             currencyCode: "ZAR",
           },
         ];
       }
       return current.map((item, idx) =>
-        idx === index ? { ...item, qty: Math.min(MAX_ITEM_QTY, item.qty + 1) } : item,
+        idx === index
+          ? {
+              ...item,
+              qty: Math.min(MAX_ITEM_QTY, item.qty + 1),
+              variantTitle: item.variantTitle || variantTitle,
+              vintage: item.vintage || vintage,
+            }
+          : item,
       );
     });
   }, []);
@@ -103,14 +123,18 @@ export default function useCart() {
     );
   }, []);
 
-  const checkout = useCallback(async () => {
+  const checkout = useCallback(async (checkoutMeta = {}) => {
     if (!cart.length) return;
     setCheckoutState('loading');
     try {
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lineItems: cart }),
+        body: JSON.stringify({
+          lineItems: cart,
+          compliance: checkoutMeta?.compliance ?? {},
+          addressCheck: checkoutMeta?.addressCheck ?? {},
+        }),
       });
       const json = await response.json();
       if (!response.ok) throw new Error(json.error || 'Checkout failed');

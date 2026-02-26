@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import HeaderCartButton from "../components/HeaderCartButton.jsx";
 import HeaderMenuButton from "../components/HeaderMenuButton.jsx";
 import HeaderCategoryNav from "../components/HeaderCategoryNav.jsx";
+import AgeGate from "../components/AgeGate.jsx";
 
 interface Props {
   title?: string;
@@ -30,6 +31,7 @@ const {
     />
   </head>
   <body>
+    <AgeGate client:load />
     <header class="site-header">
       <div class="container header-shell">
         <nav class="top-nav">
@@ -87,10 +89,11 @@ const {
               </p>
               <ul class="footer-accordion-copy-list">
                 <li>Legal Drinking Age: You must be 18 years or older to purchase alcohol.</li>
-                <li>Delivery: Orders are processed after payment confirmation and shipped to valid delivery addresses.</li>
-                <li>Returns: Unopened items may be eligible for return subject to condition and approval.</li>
+                <li>Delivery: A sober adult (18+) must receive the order and present valid ID on request.</li>
+                <li>No delivery to minors. Orders cannot be left unattended, with neighbors, or at unsecured locations.</li>
+                <li>Returns: Unopened items may be eligible for return, subject to condition and approval.</li>
                 <li>Opened alcohol products are non-returnable unless faulty, damaged, or supplied in error.</li>
-                <li>Damaged or incorrect items must be reported promptly after delivery with proof (photos/order number).</li>
+                <li>Damaged, leaking, or incorrect items must be reported within 48 hours of delivery with photos and order number.</li>
                 <li>Approved refunds are returned to the original payment method after inspection and processing.</li>
                 <li>Pricing and stock are subject to availability and may change without notice.</li>
                 <li>We may cancel or refuse orders where fraud, pricing errors, or compliance concerns are identified.</li>

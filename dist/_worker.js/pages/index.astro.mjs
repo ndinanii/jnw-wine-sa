@@ -1,20 +1,21 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_DIV_hU0m.mjs';
-import { j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_BmzsD3Yj.mjs';
+import { p as pickDefaultVariant, a as formatProductVintageText, j as jsxRuntimeExports, u as useCart, $ as $$MainLayout } from '../chunks/MainLayout_S5y0kMji.mjs';
 import { a as reactExports } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../chunks/_@astro-renderers_CHBVxjnt.mjs';
-import { a as getProducts, s as shopifyIsConfigured } from '../chunks/shopify_CZJlNPZv.mjs';
+import { s as shopifyIsConfigured, a as getProducts } from '../chunks/shopify_DbqIhcKi.mjs';
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
 const BOTTLE_PRICE_ZAR = 155;
 function ProductCard({ product, onAddToCart, index = 0 }) {
   const [added, setAdded] = reactExports.useState(false);
   const firstImage = product.images?.edges?.[0]?.node?.url;
-  const firstVariant = product.variants?.edges?.[0]?.node;
+  const defaultVariant = pickDefaultVariant(product);
+  const vintageText = formatProductVintageText(product);
   const bottlePrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
   function handleAdd() {
-    if (!firstVariant?.availableForSale) return;
-    onAddToCart(firstVariant, product);
+    if (!defaultVariant?.availableForSale) return;
+    onAddToCart(defaultVariant, product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1200);
   }
@@ -31,14 +32,15 @@ function ProductCard({ product, onAddToCart, index = 0 }) {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "product-card-body", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-label", children: "Estate Label" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `/product/${product.handle}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "product-meta-title", children: product.title }) }),
+      vintageText && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-vintage", children: vintageText }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "product-meta-price", children: bottlePrice }),
-      firstVariant?.availableForSale ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+      defaultVariant?.availableForSale ? /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           type: "button",
           className: "btn-gold product-card-cta",
           onClick: handleAdd,
-          style: { padding: "8px 12px", fontSize: "0.58rem" },
+          style: { padding: "8px 12px", fontSize: "0.64rem" },
           children: added ? "Added" : "Add to cart"
         }
       ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -48,7 +50,7 @@ function ProductCard({ product, onAddToCart, index = 0 }) {
           style: {
             justifyContent: "center",
             padding: "8px 12px",
-            fontSize: "0.58rem",
+            fontSize: "0.64rem",
             opacity: 0.6,
             cursor: "not-allowed"
           },

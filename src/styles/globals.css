@@ -63,7 +63,7 @@ button {
   border-radius: 0;
   border: 1px solid transparent;
   padding: 9px 15px;
-  font-size: 0.6rem;
+  font-size: 0.66rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
 }
@@ -540,7 +540,7 @@ button {
   background: transparent;
   padding: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: rgba(246, 242, 234, 0.58);
@@ -612,6 +612,14 @@ button {
   color: var(--color-text);
 }
 
+.product-meta-vintage {
+  margin: 0 0 5px;
+  min-height: 1.2em;
+  font-family: "Inter", sans-serif;
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+}
+
 .product-meta-price {
   margin: 0 0 6px;
   min-height: 1.2em;
@@ -663,6 +671,8 @@ button {
   border: 1px solid rgba(197, 164, 90, 0.25);
   background: rgba(197, 164, 90, 0.08);
   color: var(--color-gold-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .status-card {
@@ -717,7 +727,7 @@ button {
   background: transparent;
   color: var(--color-text-muted);
   font-family: "Inter", sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.73rem;
   padding: 6px 10px;
 }
 
@@ -725,6 +735,127 @@ button {
   border-color: var(--color-gold);
   color: var(--color-gold-soft);
   background: rgba(197, 164, 90, 0.12);
+}
+
+.age-gate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(0, 0, 0, 0.78);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.age-gate-card {
+  width: min(100%, 420px);
+  border: 1px solid rgba(197, 164, 90, 0.28);
+  background: linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(12, 12, 12, 0.98));
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.age-gate-title {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.age-gate-copy {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.79rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.age-gate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.age-gate-actions .btn-gold,
+.age-gate-actions .btn-outline {
+  flex: 1 1 150px;
+}
+
+.checkout-compliance-card {
+  border: 1px solid rgba(197, 164, 90, 0.2);
+  background: rgba(197, 164, 90, 0.04);
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.checkout-compliance-heading {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-soft);
+}
+
+.checkout-check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.checkout-check input {
+  margin-top: 2px;
+  accent-color: var(--color-gold);
+}
+
+.address-check-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+
+.address-check-grid label {
+  display: grid;
+  gap: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+.address-check-grid input {
+  border: 1px solid rgba(197, 164, 90, 0.28);
+  background: rgba(9, 9, 9, 0.6);
+  color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  font-size: 0.76rem;
+  padding: 8px 9px;
+  outline: none;
+}
+
+.address-check-grid input:focus {
+  border-color: rgba(226, 201, 141, 0.9);
+}
+
+.checkout-compliance-note {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.checkout-compliance-error {
+  margin: 0;
+  min-height: 1.2em;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  color: #f0b7a0;
 }
 
 .cart-sidebar {
@@ -967,6 +1098,12 @@ button {
     width: auto;
     min-width: 124px;
     margin-inline: auto;
+  }
+}
+
+@media (min-width: 480px) {
+  .address-check-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 

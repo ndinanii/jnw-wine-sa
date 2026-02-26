@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useCart from "../hooks/useCart";
+import { formatVariantLabel, getVariantVintage } from "../lib/productVariants";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
@@ -13,6 +14,7 @@ export default function ProductDetailClient({ product }) {
   const images = product.images?.edges?.map((edge) => edge.node) ?? [];
   const variants = product.variants?.edges?.map((edge) => edge.node) ?? [];
   const selectedVariant = variants[selectedVariantIdx];
+  const selectedVintage = getVariantVintage(selectedVariant);
   const selectedImage = images[selectedImageIdx]?.url || FALLBACK_IMAGE;
   const selectedPrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
 
@@ -60,6 +62,11 @@ export default function ProductDetailClient({ product }) {
           JNW Collection
         </p>
         <h1 style={{ margin: "0 0 6px", fontSize: "clamp(1.2rem, 2.8vw, 1.7rem)", lineHeight: 1.1 }}>{product.title}</h1>
+        {selectedVintage && (
+          <p style={{ margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)" }}>
+            Vintage: {selectedVintage}
+          </p>
+        )}
         <p style={{ margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }}>{selectedPrice}</p>
         {product.description && (
           <p style={{ margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.76rem", lineHeight: 1.45, color: "var(--color-text-muted)" }}>
@@ -70,7 +77,7 @@ export default function ProductDetailClient({ product }) {
         {variants.length > 1 && (
           <div style={{ marginBottom: "8px" }}>
             <p style={{ margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.62rem", color: "var(--color-text-muted)" }}>
-              Choose variant
+              Choose vintage and format
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
               {variants.map((variant, idx) => (
@@ -81,7 +88,7 @@ export default function ProductDetailClient({ product }) {
                   disabled={!variant.availableForSale}
                   className={idx === selectedVariantIdx ? "variant-pill variant-pill-active" : "variant-pill"}
                 >
-                  {variant.title}
+                  {formatVariantLabel(variant)}
                 </button>
               ))}
             </div>

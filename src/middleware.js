@@ -1,7 +1,4 @@
-globalThis.process ??= {}; globalThis.process.env ??= {};
-import { d as defineMiddleware, s as sequence } from './chunks/index_Cp3uQXoI.mjs';
-import './chunks/astro-designed-error-pages_CSJTn1Eq.mjs';
-import './chunks/astro/server_DIV_hU0m.mjs';
+import { defineMiddleware } from "astro:middleware";
 
 const ONE_YEAR_SECONDS = 31536000;
 const BROWSER_LONG_CACHE = `public, max-age=${ONE_YEAR_SECONDS}, immutable`;
@@ -53,7 +50,7 @@ function isCheckoutApi(pathname) {
   return pathname === "/api/checkout" || pathname.startsWith("/api/checkout/");
 }
 
-const onRequest$2 = defineMiddleware(async (context, next) => {
+export const onRequest = defineMiddleware(async (context, next) => {
   const response = await next();
   const headers = new Headers(response.headers);
   const { url, request } = context;
@@ -80,20 +77,3 @@ const onRequest$2 = defineMiddleware(async (context, next) => {
 
   return response;
 });
-
-const onRequest$1 = (context, next) => {
-  if (context.isPrerendered) {
-    context.locals.runtime ??= {
-      env: process.env
-    };
-  }
-  return next();
-};
-
-const onRequest = sequence(
-	onRequest$1,
-	onRequest$2
-	
-);
-
-export { onRequest };

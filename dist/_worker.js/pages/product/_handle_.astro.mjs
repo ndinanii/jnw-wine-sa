@@ -1,9 +1,9 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { e as createComponent, k as renderComponent, r as renderTemplate, h as createAstro, m as maybeRenderHead } from '../../chunks/astro/server_DIV_hU0m.mjs';
-import { u as useCart, j as jsxRuntimeExports, $ as $$MainLayout } from '../../chunks/MainLayout_BmzsD3Yj.mjs';
+import { u as useCart, g as getVariantVintage, j as jsxRuntimeExports, f as formatVariantLabel, $ as $$MainLayout } from '../../chunks/MainLayout_S5y0kMji.mjs';
 import { a as reactExports } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
 export { r as renderers } from '../../chunks/_@astro-renderers_CHBVxjnt.mjs';
-import { g as getProductByHandle, s as shopifyIsConfigured } from '../../chunks/shopify_CZJlNPZv.mjs';
+import { s as shopifyIsConfigured, g as getProductByHandle } from '../../chunks/shopify_DbqIhcKi.mjs';
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=900&q=80";
 const BOTTLE_PRICE_ZAR = 155;
@@ -14,6 +14,7 @@ function ProductDetailClient({ product }) {
   const images = product.images?.edges?.map((edge) => edge.node) ?? [];
   const variants = product.variants?.edges?.map((edge) => edge.node) ?? [];
   const selectedVariant = variants[selectedVariantIdx];
+  const selectedVintage = getVariantVintage(selectedVariant);
   const selectedImage = images[selectedImageIdx]?.url || FALLBACK_IMAGE;
   const selectedPrice = `R${BOTTLE_PRICE_ZAR.toFixed(2)} per bottle`;
   function handleAddToCart() {
@@ -51,10 +52,14 @@ function ProductDetailClient({ product }) {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pdp-info", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "section-label", style: { margin: "0 0 4px" }, children: "JNW Collection" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { style: { margin: "0 0 6px", fontSize: "clamp(1.2rem, 2.8vw, 1.7rem)", lineHeight: 1.1 }, children: product.title }),
+      selectedVintage && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { style: { margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)" }, children: [
+        "Vintage: ",
+        selectedVintage
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 8px", fontSize: "0.95rem", color: "var(--color-gold-soft)" }, children: selectedPrice }),
       product.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 10px", fontFamily: "Inter, sans-serif", fontSize: "0.76rem", lineHeight: 1.45, color: "var(--color-text-muted)" }, children: product.description }),
       variants.length > 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { marginBottom: "8px" }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.62rem", color: "var(--color-text-muted)" }, children: "Choose variant" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { margin: "0 0 4px", fontFamily: "Inter, sans-serif", fontSize: "0.62rem", color: "var(--color-text-muted)" }, children: "Choose vintage and format" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: "4px" }, children: variants.map((variant, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
@@ -62,7 +67,7 @@ function ProductDetailClient({ product }) {
             onClick: () => setSelectedVariantIdx(idx),
             disabled: !variant.availableForSale,
             className: idx === selectedVariantIdx ? "variant-pill variant-pill-active" : "variant-pill",
-            children: variant.title
+            children: formatVariantLabel(variant)
           },
           variant.id
         )) })
